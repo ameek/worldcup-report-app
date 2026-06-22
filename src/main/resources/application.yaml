@@ -1,3 +1,32 @@
 spring:
   application:
     name: worldcup-report-app
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fifa_worldcup
+    username: fifa_user
+    password: fifa_pass
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        show_sql: true
+    open-in-view: false
+
+  logging:
+    level:
+      com.fifa.reporting: DEBUG
+      org.hibernate.sql: DEBUG
+      org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+

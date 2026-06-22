@@ -4,23 +4,63 @@
 
 ---
 
+## ⚡ Quick Start (Click & Go)
+
+Get the local stack running in three commands:
+
+```bash
+# 1. Clone and enter the project
+git clone <your-repo-url> worldcup-report-app
+cd worldcup-report-app
+
+# 2. Start PostgreSQL and Redis
+docker compose up -d
+
+# 3. Run the Spring Boot app
+./gradlew bootRun
+```
+
+Verify:
+
+```bash
+./gradlew test
+```
+
+| Requirement | Version |
+|-------------|---------|
+| Java | 21 |
+| Docker | 20.10+ |
+| Docker Compose | 2.0+ |
+
+Default credentials (from `docker-compose.yml`):
+
+| Service | Host | Port | Database | User | Password |
+|---------|------|------|----------|------|----------|
+| PostgreSQL | `localhost` | `5432` | `fifa_worldcup` | `fifa_user` | `fifa_pass` |
+| Redis | `localhost` | `6379` | — | — | — |
+
+> **Note:** The app is an early scaffold. REST APIs and JasperReports are on the [development roadmap](#development-roadmap); infrastructure and the Spring Boot shell are ready to build on.
+
+---
+
 ## 📋 Table of Contents
-- [Project Overview](#-project-overview)
-- [Architecture](#-architecture)
-- [Technology Stack](#-technology-stack)
-- [Prerequisites](#-prerequisites)
-- [Hardware Requirements](#-hardware-requirements)
-- [Project Setup](#-project-setup)
-- [Development Roadmap](#-development-roadmap)
-- [Database Schema](#-database-schema)
-- [API Documentation](#-api-documentation)
-- [Testing Strategy](#-testing-strategy)
-- [Performance Optimization](#-performance-optimization)
-- [Deployment Guide](#-deployment-guide)
-- [Monitoring & Maintenance](#-monitoring--maintenance)
-- [Troubleshooting](#-troubleshooting)
-- [Contributing](#-contributing)
-- [License](#-license)
+- [Quick Start (Click & Go)](#quick-start-click--go)
+- [Project Overview](#project-overview)
+- [Architecture](#architecture)
+- [Technology Stack](#technology-stack)
+- [Prerequisites](#prerequisites)
+- [Hardware Requirements](#hardware-requirements)
+- [Project Setup](#project-setup)
+- [Development Roadmap](#development-roadmap)
+- [Database Schema](#database-schema)
+- [API Documentation](#api-documentation)
+- [Testing Strategy](#testing-strategy)
+- [Performance Optimization](#performance-optimization)
+- [Deployment Guide](#deployment-guide)
+- [Monitoring & Maintenance](#monitoring--maintenance)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
@@ -164,7 +204,7 @@ A **production-ready reporting system** for FIFA World Cup data that:
 ## 🛠️ Technology Stack
 
 ### Core Framework
-- **Spring Boot 3.2.0** - Application framework
+- **Spring Boot 4.1.0** - Application framework
 - **Java 21** - Programming language (LTS version)
 - **Gradle 9.5.1** - Build tool
 
@@ -305,30 +345,10 @@ Large Scale (> 10000 req/day):
 
 ## 🚀 Project Setup
 
-### Step 1: Initialize Project
+### Step 1: Clone the Repository
 ```bash
-# 1. Go to Spring Initializr
-# URL: https://start.spring.io
-
-# 2. Select these options:
-Project: Gradle - Groovy
-Language: Java
-Spring Boot: 3.2.0
-Group: com.fifa.reporting
-Artifact: worldcup-report-service
-Package name: com.fifa.reporting
-Packaging: Jar
-Java: 21
-
-# Dependencies:
-- Spring Web
-- Spring Data JPA
-- PostgreSQL Driver
-- Lombok
-- Validation
-
-# 3. Generate and download the ZIP
-# 4. Extract and open in IDE
+git clone <your-repo-url> worldcup-report-app
+cd worldcup-report-app
 ```
 
 ### Step 2: Project Structure
@@ -400,20 +420,21 @@ worldcup-report-service/
 └── README.md
 ```
 
+Planned packages (`controller/`, `service/`, `repository/`, `entity/`, `reports/`, etc.) are described in the [development roadmap](#development-roadmap).
+
 ### Step 3: Build and Run
 ```bash
 # 1. Start PostgreSQL and Redis
-docker-compose -f docker/docker-compose.yml up -d
+docker compose up -d
 
 # 2. Build the project
-./gradlew clean build -x test
+./gradlew clean build
 
 # 3. Run the application
 ./gradlew bootRun
 
-# 4. Verify it's running
-curl http://localhost:8080/actuator/health
-# Expected: {"status":"UP"}
+# 4. Run tests
+./gradlew test
 ```
 
 ---
@@ -1072,8 +1093,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### Development
 ```bash
-# Start everything
-docker-compose up -d && ./gradlew bootRun
+# Start infrastructure and app
+docker compose up -d && ./gradlew bootRun
 
 # Run tests
 ./gradlew test
@@ -1082,22 +1103,19 @@ docker-compose up -d && ./gradlew bootRun
 ./gradlew bootJar
 
 # Run JAR
-java -jar build/libs/*.jar
+java -jar build/libs/worldcup-report-app-*.jar
 ```
 
 ### Production
 ```bash
-# Build and deploy
+# Build JAR (Dockerfile and prod compose — see Deployment Guide)
 ./gradlew bootJar
 docker build -t fifa-reporting-app .
-docker-compose -f docker-compose-prod.yml up -d
+docker compose -f docker-compose-prod.yml up -d
 
 # Monitor
 docker stats
-docker logs -f fifa_app_prod
-
-# Backup
-./scripts/backup.sh
+docker compose logs -f
 ```
 
 ---

@@ -1,0 +1,112 @@
+# docker-compose.yml - Production Ready
+version: '3.8'
+
+services:
+  # ============================================
+  # POSTGRESQL - Primary Database
+  # ============================================
+  postgres:
+    image: postgres:15-alpine
+    container_name: fifa_postgres
+    environment:
+      POSTGRES_DB: fifa_worldcup
+      POSTGRES_USER: fifa_user
+      POSTGRES_PASSWORD: fifa_pass
+      # PostgreSQL Performance Tuning
+      POSTGRES_SHARED_BUFFERS: 256MB
+      POSTGRES_WORK_MEM: 16MB
+      POSTGRES_MAINTENANCE_WORK_MEM: 64MB
+      POSTGRES_EFFECTIVE_CACHE_SIZE: 512MB
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    # HARDWARE RESOURCE LIMITS
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'        # 1.5 CPU cores
+          memory: 1024M      # 1GB RAM
+        reservations:
+          cpus: '0.5'        # Minimum guaranteed
+          memory: 512M       # Minimum guaranteed
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fifa_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fifa-network
+    restart: unless-stopped
+
+  # ============================================
+  # REDIS - Cache Layer
+  # ============================================
+  redis:
+    image: redis:7-alpine
+    container_name: fifa_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    # HARDWARE RESOURCE LIMITS
+    deploy:
+      resources:
+        limits:
+          cpus: '0.8'        # 0.8 CPU cores
+          memory: 512M       # 512MB RAM
+        reservations:
+          cpus: '0.3'
+          memory: 256M
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fifa-network
+    restart: unless-stopped
+
+  # ============================================
+  # APPLICATION - Spring Boot (Optional - for Dockerized app)
+  # ============================================
+  # Uncomment this section if you want to run your app in Docker
+  # app:
+  #   build: .
+  #   container_name: fifa_app
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/fifa_worldcup
+  #     SPRING_DATASOURCE_USERNAME: fifa_user
+  #     SPRING_DATASOURCE_PASSWORD: fifa_pass
+  #     SPRING_REDIS_HOST: redis
+  #     SPRING_PROFILES_ACTIVE: docker
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #     redis:
+  #       condition: service_healthy
+  #   # HARDWARE RESOURCE LIMITS
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: '2.0'        # 2 CPU cores
+  #         memory: 1024M      # 1GB RAM
+  #       reservations:
+  #         cpus: '0.5'
+  #         memory: 512M
+  #   networks:
+  #     - fifa-network
+  #   restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  fifa-network:
+    driver: bridge
