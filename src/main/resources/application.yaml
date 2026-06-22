@@ -30,3 +30,11 @@ spring:
       org.hibernate.sql: DEBUG
       org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: health,info,metrics
+    endpoint:
+      health:
+        show-details: always
