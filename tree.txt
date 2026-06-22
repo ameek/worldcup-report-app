@@ -1,0 +1,71 @@
+.
+├── build
+│   ├── classes
+│   │   └── java
+│   │       ├── main
+│   │       │   └── com
+│   │       │       └── fifa
+│   │       │           └── reporting
+│   │       │               └── worldcup_report_app
+│   │       │                   └── WorldcupReportAppApplication.class
+│   │       └── test
+│   ├── generated
+│   │   └── sources
+│   │       ├── annotationProcessor
+│   │       │   └── java
+│   │       │       └── main
+│   │       └── headers
+│   │           └── java
+│   │               └── main
+│   ├── libs
+│   │   ├── worldcup-report-app-0.0.1-SNAPSHOT.jar
+│   │   └── worldcup-report-app-0.0.1-SNAPSHOT-plain.jar
+│   ├── resolvedMainClassName
+│   ├── resources
+│   │   ├── main
+│   │   │   ├── application.yaml
+│   │   │   ├── static
+│   │   │   └── templates
+│   │   └── test
+│   └── tmp
+│       ├── bootJar
+│       │   └── MANIFEST.MF
+│       ├── compileJava
+│       │   └── previous-compilation-data.bin
+│       └── jar
+│           └── MANIFEST.MF
+├── build.gradle
+├── docker-compose.yml
+├── gradle
+│   └── wrapper
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+├── gradlew
+├── gradlew.bat
+├── HELP.md
+├── postgresql.conf
+├── readme.md
+├── redis.conf
+├── settings.gradle
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   └── com
+│   │   │       └── fifa
+│   │   │           └── reporting
+│   │   │               └── worldcup_report_app
+│   │   │                   └── WorldcupReportAppApplication.java
+│   │   └── resources
+│   │       ├── application.yaml
+│   │       ├── static
+│   │       └── templates
+│   └── test
+│       └── java
+│           └── com
+│               └── fifa
+│                   └── reporting
+│                       └── worldcup_report_app
+│                           └── WorldcupReportAppApplicationTests.java
+└── tree.txt
+
+48 directories, 21 files
