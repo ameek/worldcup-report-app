@@ -646,10 +646,11 @@ GET    /teams/group/{groupName}     - Get teams by group
 # Get all World Cups
 curl -X GET "http://localhost:8080/api/v1/worldcups" | jq .
 
-# Get Argentina's performance report
+# Get Argentina's performance report (saved under output/reports/)
+mkdir -p output/reports
 curl -X GET "http://localhost:8080/api/v1/reports/team/Argentina" \
   -H "Accept: application/pdf" \
-  --output argentina_report.pdf
+  --output output/reports/argentina_report.pdf
 
 # Generate async report for 2022
 curl -X POST "http://localhost:8080/api/v1/reports/worldcup/2022" | jq .

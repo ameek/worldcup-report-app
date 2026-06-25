@@ -15,6 +15,12 @@ java {
 
 repositories {
 	mavenCentral()
+	maven {
+		url 'https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/'
+	}
+	maven {
+		url 'https://jaspersoft.jfrog.io/jaspersoft/jr-ce-releases/'
+	}
 }
 
 dependencies {
@@ -31,6 +37,11 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testAnnotationProcessor 'org.projectlombok:lombok'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+	implementation 'net.sf.jasperreports:jasperreports:6.20.0'
+	implementation 'net.sf.jasperreports:jasperreports-fonts:6.20.0'
+	implementation 'net.sf.jasperreports:jasperreports-functions:6.20.0'
+	implementation 'net.sf.jasperreports:jasperreports-components:6.20.0'
 }
 
 tasks.named('test') {
