@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  LEARNING: team_performance.jrxml
-  ---------------------------------
-  This report demonstrates advanced JasperReports patterns:
-
-  1. PARAMETERS ($P{})     — scalar values from Java (team name, stats, data sources)
-  2. SUB DATASETS          — separate field definitions for nested tables
-  3. TABLE COMPONENT (jr:) — declarative column layout instead of manual detail bands
-  4. LOCALDATE             — java.time.LocalDate fields with pattern formatting
-  5. EXTERNAL IMAGES       — URL strings resolved at fill time in <imageExpression>
-
-  Main report uses JREmptyDataSource(1); tables pull rows from parameter-bound subDatasets.
--->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
-              xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd
-              http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
               name="team_performance"
               pageWidth="595"
               pageHeight="842"
@@ -27,31 +12,6 @@
               bottomMargin="20"
               whenResourceMissingType="Empty">
 
-    <!-- LEARNING: SubDataset = a mini-report schema for a nested table.
-         Fields here are independent from the main report's fields. -->
-    <subDataset name="MatchHistoryDataset">
-        <field name="year" class="java.lang.Integer"/>
-        <field name="matchDate" class="java.time.LocalDate"/>
-        <field name="opponent" class="java.lang.String"/>
-        <field name="opponentFlagUrl" class="java.lang.String"/>
-        <field name="goalsFor" class="java.lang.Integer"/>
-        <field name="goalsAgainst" class="java.lang.Integer"/>
-        <field name="result" class="java.lang.String"/>
-        <field name="stage" class="java.lang.String"/>
-        <field name="stadium" class="java.lang.String"/>
-    </subDataset>
-
-    <!-- LEARNING: Second subDataset = second data source (tournament participation). -->
-    <subDataset name="TournamentDataset">
-        <field name="year" class="java.lang.Integer"/>
-        <field name="hostCountry" class="java.lang.String"/>
-        <field name="tournamentStart" class="java.time.LocalDate"/>
-        <field name="tournamentEnd" class="java.time.LocalDate"/>
-        <field name="role" class="java.lang.String"/>
-        <field name="hostFlagUrl" class="java.lang.String"/>
-    </subDataset>
-
-    <!-- LEARNING: Parameters are the contract between ReportService.java and this template. -->
     <parameter name="teamName" class="java.lang.String"/>
     <parameter name="teamFlagUrl" class="java.lang.String"/>
     <parameter name="reportDate" class="java.time.LocalDate"/>
@@ -63,20 +23,15 @@
     <parameter name="goalsScored" class="java.lang.Integer"/>
     <parameter name="goalsConceded" class="java.lang.Integer"/>
     <parameter name="goalDifference" class="java.lang.Integer"/>
-
-    <!-- LEARNING: JRBeanCollectionDataSource parameters feed subDataset table runs. -->
     <parameter name="matchDataSource" class="net.sf.jasperreports.engine.JRDataSource"/>
     <parameter name="tournamentDataSource" class="net.sf.jasperreports.engine.JRDataSource"/>
 
     <title>
-        <band height="155" splitType="Stretch">
-            <!-- LEARNING: imageExpression with a URL string loads an external image at fill time.
-                 onErrorType="Blank" avoids breaking the PDF if the CDN is unreachable. -->
+        <band height="140">
             <image scaleImage="FillFrame" onErrorType="Blank">
                 <reportElement x="0" y="15" width="70" height="45"/>
                 <imageExpression><![CDATA[$P{teamFlagUrl}]]></imageExpression>
             </image>
-
             <staticText>
                 <reportElement x="80" y="15" width="475" height="35" forecolor="#1a237e"/>
                 <textElement textAlignment="Center">
@@ -84,17 +39,13 @@
                 </textElement>
                 <text><![CDATA[FIFA World Cup Performance Report]]></text>
             </staticText>
-
             <textField>
                 <reportElement x="80" y="52" width="475" height="28" forecolor="#0d47a1"/>
                 <textElement textAlignment="Center">
                     <font size="16" isBold="true" fontName="DejaVu Sans"/>
                 </textElement>
-                <!-- LEARNING: Expression concatenation with $P{parameter} -->
                 <textFieldExpression><![CDATA["Team: " + $P{teamName}]]></textFieldExpression>
             </textField>
-
-            <!-- LEARNING: LocalDate + pattern attribute formats without SimpleDateFormat -->
             <textField pattern="MMMM dd, yyyy">
                 <reportElement x="350" y="95" width="205" height="20" forecolor="#666666"/>
                 <textElement textAlignment="Right">
@@ -102,215 +53,11 @@
                 </textElement>
                 <textFieldExpression><![CDATA["Generated: " + $P{reportDate}]]></textFieldExpression>
             </textField>
-
-            <line>
-                <reportElement x="0" y="130" width="555" height="1"/>
-                <graphicElement>
-                    <pen lineWidth="1.0" lineColor="#1a237e"/>
-                </graphicElement>
-            </line>
         </band>
     </title>
 
-  <!-- LEARNING: Detail band runs once per main data source record (we pass JREmptyDataSource(1)). -->
-    <detail>
-        <band height="280" splitType="Stretch">
-            <staticText>
-                <reportElement x="0" y="5" width="555" height="22" forecolor="#1a237e"/>
-                <textElement>
-                    <font size="14" isBold="true" fontName="DejaVu Sans"/>
-                </textElement>
-                <text><![CDATA[Match History]]></text>
-            </staticText>
-
-            <!-- LEARNING: jr:table is the advanced table component (requires jasperreports-components).
-                 Each jr:column defines header + detail cell. datasetRun binds a subDataset to a parameter. -->
-            <componentElement>
-                <reportElement x="0" y="30" width="555" height="240" isPrintWhenDetailOverflows="true"/>
-                <jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components">
-                    <datasetRun subDataset="MatchHistoryDataset">
-                        <dataSourceExpression><![CDATA[$P{matchDataSource}]]></dataSourceExpression>
-                    </datasetRun>
-
-                    <jr:column width="38">
-                        <jr:columnHeader height="26" rowSpan="1">
-                            <staticText>
-                                <reportElement x="0" y="0" width="38" height="26" backcolor="#e8eaf6" mode="Opaque"/>
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font size="8" isBold="true" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <text><![CDATA[Flag]]></text>
-                            </staticText>
-                        </jr:columnHeader>
-                        <jr:detailCell height="22">
-                            <image scaleImage="FillFrame" onErrorType="Blank">
-                                <reportElement x="4" y="2" width="30" height="18"/>
-                                <imageExpression><![CDATA[$F{opponentFlagUrl}]]></imageExpression>
-                            </image>
-                        </jr:detailCell>
-                    </jr:column>
-
-                    <jr:column width="42">
-                        <jr:columnHeader height="26" rowSpan="1">
-                            <staticText>
-                                <reportElement mode="Opaque" backcolor="#e8eaf6"/>
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font size="9" isBold="true" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <text><![CDATA[Year]]></text>
-                            </staticText>
-                        </jr:columnHeader>
-                        <jr:detailCell height="22">
-                            <textField>
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font size="8" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <textFieldExpression><![CDATA[$F{year}]]></textFieldExpression>
-                            </textField>
-                        </jr:detailCell>
-                    </jr:column>
-
-                    <jr:column width="72">
-                        <jr:columnHeader height="26" rowSpan="1">
-                            <staticText>
-                                <reportElement mode="Opaque" backcolor="#e8eaf6"/>
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font size="9" isBold="true" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <text><![CDATA[Date]]></text>
-                            </staticText>
-                        </jr:columnHeader>
-                        <jr:detailCell height="22">
-                            <textField pattern="yyyy-MM-dd">
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font size="8" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <textFieldExpression><![CDATA[$F{matchDate}]]></textFieldExpression>
-                            </textField>
-                        </jr:detailCell>
-                    </jr:column>
-
-                    <jr:column width="95">
-                        <jr:columnHeader height="26" rowSpan="1">
-                            <staticText>
-                                <reportElement mode="Opaque" backcolor="#e8eaf6"/>
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font size="9" isBold="true" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <text><![CDATA[Opponent]]></text>
-                            </staticText>
-                        </jr:columnHeader>
-                        <jr:detailCell height="22">
-                            <textField>
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement verticalAlignment="Middle">
-                                    <font size="8" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <textFieldExpression><![CDATA[$F{opponent}]]></textFieldExpression>
-                            </textField>
-                        </jr:detailCell>
-                    </jr:column>
-
-                    <jr:column width="48">
-                        <jr:columnHeader height="26" rowSpan="1">
-                            <staticText>
-                                <reportElement mode="Opaque" backcolor="#e8eaf6"/>
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font size="9" isBold="true" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <text><![CDATA[Score]]></text>
-                            </staticText>
-                        </jr:columnHeader>
-                        <jr:detailCell height="22">
-                            <textField>
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font size="8" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <textFieldExpression><![CDATA[$F{goalsFor} + " - " + $F{goalsAgainst}]]></textFieldExpression>
-                            </textField>
-                        </jr:detailCell>
-                    </jr:column>
-
-                    <jr:column width="48">
-                        <jr:columnHeader height="26" rowSpan="1">
-                            <staticText>
-                                <reportElement mode="Opaque" backcolor="#e8eaf6"/>
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font size="9" isBold="true" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <text><![CDATA[Result]]></text>
-                            </staticText>
-                        </jr:columnHeader>
-                        <jr:detailCell height="22">
-                            <textField>
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font size="8" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <textFieldExpression><![CDATA[$F{result}]]></textFieldExpression>
-                            </textField>
-                        </jr:detailCell>
-                    </jr:column>
-
-                    <jr:column width="95">
-                        <jr:columnHeader height="26" rowSpan="1">
-                            <staticText>
-                                <reportElement mode="Opaque" backcolor="#e8eaf6"/>
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font size="9" isBold="true" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <text><![CDATA[Stage]]></text>
-                            </staticText>
-                        </jr:columnHeader>
-                        <jr:detailCell height="22">
-                            <textField>
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement verticalAlignment="Middle">
-                                    <font size="8" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <textFieldExpression><![CDATA[$F{stage}]]></textFieldExpression>
-                            </textField>
-                        </jr:detailCell>
-                    </jr:column>
-
-                    <jr:column width="117">
-                        <jr:columnHeader height="26" rowSpan="1">
-                            <staticText>
-                                <reportElement mode="Opaque" backcolor="#e8eaf6"/>
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font size="9" isBold="true" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <text><![CDATA[Stadium]]></text>
-                            </staticText>
-                        </jr:columnHeader>
-                        <jr:detailCell height="22">
-                            <textField>
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement verticalAlignment="Middle">
-                                    <font size="8" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <textFieldExpression><![CDATA[$F{stadium}]]></textFieldExpression>
-                            </textField>
-                        </jr:detailCell>
-                    </jr:column>
-                </jr:table>
-            </componentElement>
-        </band>
-    </detail>
-
     <summary>
-        <band height="320" splitType="Stretch">
+        <band height="220">
             <staticText>
                 <reportElement x="0" y="10" width="555" height="25" forecolor="#1a237e"/>
                 <textElement textAlignment="Center">
@@ -320,240 +67,92 @@
             </staticText>
 
             <staticText>
-                <reportElement x="30" y="45" width="120" height="20"/>
+                <reportElement x="30" y="45" width="160" height="20"/>
                 <textElement><font size="11" fontName="DejaVu Sans"/></textElement>
                 <text><![CDATA[Total World Cups:]]></text>
             </staticText>
             <textField>
-                <reportElement x="160" y="45" width="80" height="20"/>
+                <reportElement x="200" y="45" width="80" height="20"/>
                 <textElement><font size="11" isBold="true" fontName="DejaVu Sans"/></textElement>
                 <textFieldExpression><![CDATA[$P{totalWorldCups}]]></textFieldExpression>
             </textField>
 
             <staticText>
-                <reportElement x="300" y="45" width="120" height="20"/>
+                <reportElement x="300" y="45" width="140" height="20"/>
                 <textElement><font size="11" fontName="DejaVu Sans"/></textElement>
                 <text><![CDATA[Total Matches:]]></text>
             </staticText>
             <textField>
-                <reportElement x="430" y="45" width="80" height="20"/>
+                <reportElement x="440" y="45" width="80" height="20"/>
                 <textElement><font size="11" isBold="true" fontName="DejaVu Sans"/></textElement>
                 <textFieldExpression><![CDATA[$P{totalMatches}]]></textFieldExpression>
             </textField>
 
             <staticText>
-                <reportElement x="30" y="70" width="120" height="20"/>
+                <reportElement x="30" y="75" width="160" height="20"/>
                 <textElement><font size="11" fontName="DejaVu Sans"/></textElement>
                 <text><![CDATA[Wins:]]></text>
             </staticText>
             <textField>
-                <reportElement x="160" y="70" width="80" height="20" forecolor="#2e7d32"/>
+                <reportElement x="200" y="75" width="80" height="20" forecolor="#2e7d32"/>
                 <textElement><font size="11" isBold="true" fontName="DejaVu Sans"/></textElement>
                 <textFieldExpression><![CDATA[$P{wins}]]></textFieldExpression>
             </textField>
 
             <staticText>
-                <reportElement x="300" y="70" width="120" height="20"/>
+                <reportElement x="300" y="75" width="140" height="20"/>
                 <textElement><font size="11" fontName="DejaVu Sans"/></textElement>
                 <text><![CDATA[Losses:]]></text>
             </staticText>
             <textField>
-                <reportElement x="430" y="70" width="80" height="20" forecolor="#c62828"/>
+                <reportElement x="440" y="75" width="80" height="20" forecolor="#c62828"/>
                 <textElement><font size="11" isBold="true" fontName="DejaVu Sans"/></textElement>
                 <textFieldExpression><![CDATA[$P{losses}]]></textFieldExpression>
             </textField>
 
             <staticText>
-                <reportElement x="30" y="95" width="120" height="20"/>
+                <reportElement x="30" y="105" width="160" height="20"/>
                 <textElement><font size="11" fontName="DejaVu Sans"/></textElement>
                 <text><![CDATA[Draws:]]></text>
             </staticText>
             <textField>
-                <reportElement x="160" y="95" width="80" height="20" forecolor="#f57c00"/>
+                <reportElement x="200" y="105" width="80" height="20" forecolor="#f57c00"/>
                 <textElement><font size="11" isBold="true" fontName="DejaVu Sans"/></textElement>
                 <textFieldExpression><![CDATA[$P{draws}]]></textFieldExpression>
             </textField>
 
             <staticText>
-                <reportElement x="300" y="95" width="120" height="20"/>
+                <reportElement x="300" y="105" width="140" height="20"/>
                 <textElement><font size="11" fontName="DejaVu Sans"/></textElement>
                 <text><![CDATA[Goal Difference:]]></text>
             </staticText>
             <textField>
-                <reportElement x="430" y="95" width="80" height="20"/>
+                <reportElement x="440" y="105" width="80" height="20"/>
                 <textElement><font size="11" isBold="true" fontName="DejaVu Sans"/></textElement>
                 <textFieldExpression><![CDATA[$P{goalDifference}]]></textFieldExpression>
             </textField>
 
             <staticText>
-                <reportElement x="30" y="120" width="120" height="20"/>
+                <reportElement x="30" y="135" width="160" height="20"/>
                 <textElement><font size="11" fontName="DejaVu Sans"/></textElement>
                 <text><![CDATA[Goals Scored:]]></text>
             </staticText>
             <textField>
-                <reportElement x="160" y="120" width="80" height="20"/>
+                <reportElement x="200" y="135" width="80" height="20"/>
                 <textElement><font size="11" isBold="true" fontName="DejaVu Sans"/></textElement>
                 <textFieldExpression><![CDATA[$P{goalsScored}]]></textFieldExpression>
             </textField>
 
             <staticText>
-                <reportElement x="300" y="120" width="120" height="20"/>
+                <reportElement x="300" y="135" width="140" height="20"/>
                 <textElement><font size="11" fontName="DejaVu Sans"/></textElement>
                 <text><![CDATA[Goals Conceded:]]></text>
             </staticText>
             <textField>
-                <reportElement x="430" y="120" width="80" height="20"/>
+                <reportElement x="440" y="135" width="80" height="20"/>
                 <textElement><font size="11" isBold="true" fontName="DejaVu Sans"/></textElement>
                 <textFieldExpression><![CDATA[$P{goalsConceded}]]></textFieldExpression>
             </textField>
-
-            <staticText>
-                <reportElement x="0" y="155" width="555" height="22" forecolor="#1a237e"/>
-                <textElement>
-                    <font size="14" isBold="true" fontName="DejaVu Sans"/>
-                </textElement>
-                <text><![CDATA[Tournament Participation]]></text>
-            </staticText>
-
-            <!-- LEARNING: Second jr:table bound to TournamentDataset + tournamentDataSource parameter. -->
-            <componentElement>
-                <reportElement x="0" y="180" width="555" height="130" isPrintWhenDetailOverflows="true"/>
-                <jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components">
-                    <datasetRun subDataset="TournamentDataset">
-                        <dataSourceExpression><![CDATA[$P{tournamentDataSource}]]></dataSourceExpression>
-                    </datasetRun>
-
-                    <jr:column width="38">
-                        <jr:columnHeader height="26" rowSpan="1">
-                            <staticText>
-                                <reportElement mode="Opaque" backcolor="#e3f2fd"/>
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font size="8" isBold="true" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <text><![CDATA[Host]]></text>
-                            </staticText>
-                        </jr:columnHeader>
-                        <jr:detailCell height="22">
-                            <image scaleImage="FillFrame" onErrorType="Blank">
-                                <reportElement x="4" y="2" width="30" height="18"/>
-                                <imageExpression><![CDATA[$F{hostFlagUrl}]]></imageExpression>
-                            </image>
-                        </jr:detailCell>
-                    </jr:column>
-
-                    <jr:column width="50">
-                        <jr:columnHeader height="26" rowSpan="1">
-                            <staticText>
-                                <reportElement mode="Opaque" backcolor="#e3f2fd"/>
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font size="9" isBold="true" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <text><![CDATA[Year]]></text>
-                            </staticText>
-                        </jr:columnHeader>
-                        <jr:detailCell height="22">
-                            <textField>
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font size="8" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <textFieldExpression><![CDATA[$F{year}]]></textFieldExpression>
-                            </textField>
-                        </jr:detailCell>
-                    </jr:column>
-
-                    <jr:column width="110">
-                        <jr:columnHeader height="26" rowSpan="1">
-                            <staticText>
-                                <reportElement mode="Opaque" backcolor="#e3f2fd"/>
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font size="9" isBold="true" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <text><![CDATA[Host Country]]></text>
-                            </staticText>
-                        </jr:columnHeader>
-                        <jr:detailCell height="22">
-                            <textField>
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement verticalAlignment="Middle">
-                                    <font size="8" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <textFieldExpression><![CDATA[$F{hostCountry}]]></textFieldExpression>
-                            </textField>
-                        </jr:detailCell>
-                    </jr:column>
-
-                    <jr:column width="95">
-                        <jr:columnHeader height="26" rowSpan="1">
-                            <staticText>
-                                <reportElement mode="Opaque" backcolor="#e3f2fd"/>
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font size="9" isBold="true" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <text><![CDATA[Start]]></text>
-                            </staticText>
-                        </jr:columnHeader>
-                        <jr:detailCell height="22">
-                            <textField pattern="MMM dd, yyyy">
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font size="8" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <textFieldExpression><![CDATA[$F{tournamentStart}]]></textFieldExpression>
-                            </textField>
-                        </jr:detailCell>
-                    </jr:column>
-
-                    <jr:column width="95">
-                        <jr:columnHeader height="26" rowSpan="1">
-                            <staticText>
-                                <reportElement mode="Opaque" backcolor="#e3f2fd"/>
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font size="9" isBold="true" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <text><![CDATA[End]]></text>
-                            </staticText>
-                        </jr:columnHeader>
-                        <jr:detailCell height="22">
-                            <textField pattern="MMM dd, yyyy">
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font size="8" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <textFieldExpression><![CDATA[$F{tournamentEnd}]]></textFieldExpression>
-                            </textField>
-                        </jr:detailCell>
-                    </jr:column>
-
-                    <jr:column width="167">
-                        <jr:columnHeader height="26" rowSpan="1">
-                            <staticText>
-                                <reportElement mode="Opaque" backcolor="#e3f2fd"/>
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font size="9" isBold="true" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <text><![CDATA[Team Role]]></text>
-                            </staticText>
-                        </jr:columnHeader>
-                        <jr:detailCell height="22">
-                            <textField>
-                                <box><pen lineWidth="0.5"/></box>
-                                <textElement verticalAlignment="Middle">
-                                    <font size="8" fontName="DejaVu Sans"/>
-                                </textElement>
-                                <textFieldExpression><![CDATA[$F{role}]]></textFieldExpression>
-                            </textField>
-                        </jr:detailCell>
-                    </jr:column>
-                </jr:table>
-            </componentElement>
         </band>
     </summary>
-
 </jasperReport>

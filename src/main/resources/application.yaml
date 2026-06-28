@@ -24,17 +24,17 @@ spring:
         show_sql: true
     open-in-view: false
 
-  logging:
-    level:
-      com.fifa.reporting: DEBUG
-      org.hibernate.sql: DEBUG
-      org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+logging:
+  level:
+    com.fifa.reporting: DEBUG
+    org.hibernate.sql: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
-  management:
-    endpoints:
-      web:
-        exposure:
-          include: health,info,metrics
-    endpoint:
-      health:
-        show-details: always
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
