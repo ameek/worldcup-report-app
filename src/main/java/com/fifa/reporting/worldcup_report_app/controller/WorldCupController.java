@@ -4,6 +4,8 @@ import com.fifa.reporting.worldcup_report_app.dto.request.WorldCupRequestDTO;
 import com.fifa.reporting.worldcup_report_app.dto.response.WorldCupResponseDTO;
 import com.fifa.reporting.worldcup_report_app.dto.response.WorldCupSummaryDTO;
 import com.fifa.reporting.worldcup_report_app.service.WorldCupService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,11 +19,13 @@ import java.util.List;
 @RequestMapping("/api/v1/worldcups")
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "World Cups", description = "World Cup tournament CRUD and lookup operations")
 public class WorldCupController {
 
     private final WorldCupService worldCupService;
 
     @GetMapping
+    @Operation(summary = "List all World Cups")
     public ResponseEntity<List<WorldCupSummaryDTO>> getAll() {
         log.debug("Fetching all World Cups");
         return ResponseEntity.ok(worldCupService.findAll());

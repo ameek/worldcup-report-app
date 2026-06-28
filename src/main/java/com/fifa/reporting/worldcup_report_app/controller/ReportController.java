@@ -1,6 +1,8 @@
 package com.fifa.reporting.worldcup_report_app.controller;
 
 import com.fifa.reporting.worldcup_report_app.service.ReportService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
@@ -16,11 +18,13 @@ import java.nio.charset.StandardCharsets;
 @RequestMapping("/api/v1/reports")
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "Reports", description = "JasperReports PDF generation endpoints")
 public class ReportController {
 
     private final ReportService reportService;
 
     @GetMapping("/team/{teamName}")
+    @Operation(summary = "Generate team performance PDF report")
     public ResponseEntity<ByteArrayResource> generateTeamReport(@PathVariable String teamName) {
         try {
             log.info("Generating team report for: {}", teamName);
