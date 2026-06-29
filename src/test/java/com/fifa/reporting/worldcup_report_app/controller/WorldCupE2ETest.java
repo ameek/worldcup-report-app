@@ -84,4 +84,26 @@ class WorldCupE2ETest {
         mockMvc.perform(get("/api/v1/reports/team/UnknownTeam"))
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    void generateTravelApprovalReportReturnsPdf() throws Exception {
+        assertTravelApprovalPdf("/api/v1/travel-approval/report");
+    }
+
+    @Test
+    void generateTravelApprovalReportV2ReturnsPdf() throws Exception {
+        assertTravelApprovalPdf("/api/v1/travel-approval/report/v2");
+    }
+
+    private void assertTravelApprovalPdf(String url) throws Exception {
+        mockMvc.perform(get(url).accept(MediaType.APPLICATION_PDF))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Content-Type", containsString("application/pdf")))
+                .andExpect(result -> {
+                    byte[] body = result.getResponse().getContentAsByteArray();
+                    if (body.length < 100) {
+                        throw new AssertionError("Expected non-empty PDF, got " + body.length + " bytes");
+                    }
+                });
+    }
 }
