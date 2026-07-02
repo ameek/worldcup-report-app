@@ -1,257 +1,223 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
-              name="travel_approval_form"
-              pageWidth="595"
-              pageHeight="842"
-              columnWidth="555"
-              leftMargin="20"
-              rightMargin="20"
-              topMargin="20"
-              bottomMargin="20"
-              whenResourceMissingType="Empty">
-
-    <parameter name="formNumber" class="java.lang.String"/>
-    <parameter name="applicantName" class="java.lang.String"/>
-    <parameter name="pin" class="java.lang.String"/>
-    <parameter name="designation" class="java.lang.String"/>
-    <parameter name="program" class="java.lang.String"/>
-    <parameter name="destination" class="java.lang.String"/>
-    <parameter name="travelStartDateTime" class="java.lang.String"/>
-    <parameter name="probableReturnDateTime" class="java.lang.String"/>
-    <parameter name="purpose" class="java.lang.String"/>
-    <parameter name="applicationDate" class="java.lang.String"/>
-    <parameter name="applicantSignatureDate" class="java.lang.String"/>
-    <parameter name="approverName" class="java.lang.String"/>
-    <parameter name="approverPin" class="java.lang.String"/>
-    <parameter name="approverDesignation" class="java.lang.String"/>
-    <parameter name="generatedAt" class="java.lang.String"/>
-    <parameter name="footerUrl" class="java.lang.String"/>
-    <parameter name="footerUser" class="java.lang.String"/>
-    <parameter name="bracLogoUrl" class="java.lang.String"/>
-
-    <title>
-        <band height="430" splitType="Stretch">
-
-            <!-- Header: logo + form number -->
-            <image scaleImage="RetainShape" onErrorType="Blank" hAlign="Left" vAlign="Top">
-                <reportElement x="0" y="0" width="124" height="38"/>
-                <imageExpression><![CDATA[$P{bracLogoUrl}]]></imageExpression>
-            </image>
-            <textField isBlankWhenNull="true">
-                <reportElement x="360" y="2" width="195" height="16"/>
-                <textElement textAlignment="Right">
-                    <font size="11" fontName="DejaVu Serif"/>
-                </textElement>
-                <textFieldExpression><![CDATA["Form : " + $P{formNumber}]]></textFieldExpression>
-            </textField>
-
-            <!-- Title -->
-            <staticText>
-                <reportElement x="0" y="44" width="555" height="22"/>
-                <textElement textAlignment="Center">
-                    <font size="14" isBold="true" fontName="DejaVu Serif"/>
-                </textElement>
-                <text><![CDATA[TRAVEL APPROVAL FORM]]></text>
-            </staticText>
-
-            <!-- Applicant / trip details — left column -->
-            <textField isBlankWhenNull="true">
-                <reportElement x="0" y="82" width="275" height="16"/>
-                <textElement>
-                    <font size="11" fontName="DejaVu Serif"/>
-                </textElement>
-                <textFieldExpression><![CDATA["Name: " + $P{applicantName}]]></textFieldExpression>
-            </textField>
-            <textField isBlankWhenNull="true">
-                <reportElement x="0" y="102" width="275" height="16"/>
-                <textElement>
-                    <font size="11" fontName="DejaVu Serif"/>
-                </textElement>
-                <textFieldExpression><![CDATA["Program: " + $P{program}]]></textFieldExpression>
-            </textField>
-            <textField isBlankWhenNull="true">
-                <reportElement x="0" y="122" width="275" height="16"/>
-                <textElement>
-                    <font size="11" fontName="DejaVu Serif"/>
-                </textElement>
-                <textFieldExpression><![CDATA["Travel start date time: " + $P{travelStartDateTime}]]></textFieldExpression>
-            </textField>
-            <textField isBlankWhenNull="true">
-                <reportElement x="0" y="142" width="275" height="16"/>
-                <textElement>
-                    <font size="11" fontName="DejaVu Serif"/>
-                </textElement>
-                <textFieldExpression><![CDATA["Purpose: " + $P{purpose}]]></textFieldExpression>
-            </textField>
-            <textField isBlankWhenNull="true">
-                <reportElement x="0" y="162" width="275" height="16"/>
-                <textElement>
-                    <font size="11" fontName="DejaVu Serif"/>
-                </textElement>
-                <textFieldExpression><![CDATA["Application Date: " + $P{applicationDate}]]></textFieldExpression>
-            </textField>
-
-            <!-- Applicant / trip details — right column -->
-            <textField isBlankWhenNull="true">
-                <reportElement x="280" y="82" width="275" height="16"/>
-                <textElement>
-                    <font size="11" fontName="DejaVu Serif"/>
-                </textElement>
-                <textFieldExpression><![CDATA["PIN: " + $P{pin}]]></textFieldExpression>
-            </textField>
-            <textField isBlankWhenNull="true">
-                <reportElement x="280" y="102" width="275" height="32"/>
-                <textElement>
-                    <font size="11" fontName="DejaVu Serif"/>
-                </textElement>
-                <textFieldExpression><![CDATA["Designation: " + $P{designation}]]></textFieldExpression>
-            </textField>
-            <textField isBlankWhenNull="true">
-                <reportElement x="280" y="138" width="275" height="16"/>
-                <textElement>
-                    <font size="11" fontName="DejaVu Serif"/>
-                </textElement>
-                <textFieldExpression><![CDATA["Destination: " + $P{destination}]]></textFieldExpression>
-            </textField>
-            <textField isBlankWhenNull="true">
-                <reportElement x="280" y="158" width="275" height="16"/>
-                <textElement>
-                    <font size="11" fontName="DejaVu Serif"/>
-                </textElement>
-                <textFieldExpression><![CDATA["Probable return date time: " + $P{probableReturnDateTime}]]></textFieldExpression>
-            </textField>
-
-            <!-- Signature / approval box -->
-            <frame>
-                <reportElement x="0" y="195" width="555" height="108"/>
-                <box>
-                    <pen lineWidth="0.5" lineColor="#000000"/>
-                </box>
-
-                <line>
-                    <reportElement x="277" y="0" width="1" height="108"/>
-                    <graphicElement>
-                        <pen lineWidth="0.5" lineColor="#000000"/>
-                    </graphicElement>
-                </line>
-
-                <!-- Left: applicant signature -->
-                <textField isBlankWhenNull="true">
-                    <reportElement x="10" y="12" width="255" height="16"/>
-                    <textElement>
-                        <font size="11" fontName="DejaVu Serif"/>
-                    </textElement>
-                    <textFieldExpression><![CDATA["Applicant Signature: " + $P{applicantName}]]></textFieldExpression>
-                </textField>
-                <textField isBlankWhenNull="true">
-                    <reportElement x="10" y="32" width="255" height="16"/>
-                    <textElement>
-                        <font size="11" fontName="DejaVu Serif"/>
-                    </textElement>
-                    <textFieldExpression><![CDATA["Date: " + $P{applicantSignatureDate}]]></textFieldExpression>
-                </textField>
-
-                <!-- Right: approval information -->
-                <staticText>
-                    <reportElement x="287" y="12" width="258" height="16"/>
-                    <textElement>
-                        <font size="11" isBold="true" fontName="DejaVu Serif"/>
-                    </textElement>
-                    <text><![CDATA[Approval information :]]></text>
-                </staticText>
-                <textField isBlankWhenNull="true">
-                    <reportElement x="287" y="32" width="258" height="16"/>
-                    <textElement>
-                        <font size="11" fontName="DejaVu Serif"/>
-                    </textElement>
-                    <textFieldExpression><![CDATA["Name: " + $P{approverName}]]></textFieldExpression>
-                </textField>
-                <textField isBlankWhenNull="true">
-                    <reportElement x="287" y="52" width="258" height="16"/>
-                    <textElement>
-                        <font size="11" fontName="DejaVu Serif"/>
-                    </textElement>
-                    <textFieldExpression><![CDATA["Pin: " + $P{approverPin}]]></textFieldExpression>
-                </textField>
-                <textField isBlankWhenNull="true">
-                    <reportElement x="287" y="72" width="258" height="16"/>
-                    <textElement>
-                        <font size="11" fontName="DejaVu Serif"/>
-                    </textElement>
-                    <textFieldExpression><![CDATA["Designation: " + $P{approverDesignation}]]></textFieldExpression>
-                </textField>
-            </frame>
-
-            <!-- Post-trip completion box -->
-            <frame>
-                <reportElement x="0" y="308" width="555" height="82"/>
-                <box>
-                    <pen lineWidth="0.5" lineColor="#000000"/>
-                </box>
-
-                <staticText>
-                    <reportElement x="0" y="10" width="555" height="16"/>
-                    <textElement textAlignment="Center">
-                        <font size="11" isBold="true" fontName="DejaVu Serif"/>
-                    </textElement>
-                    <text><![CDATA[To be completed at the end of the trip]]></text>
-                </staticText>
-                <staticText>
-                    <reportElement x="10" y="34" width="535" height="16"/>
-                    <textElement>
-                        <font size="11" fontName="DejaVu Serif"/>
-                    </textElement>
-                    <text><![CDATA[Actual return date: .................................................................... Time: ....................................................................]]></text>
-                </staticText>
-                <staticText>
-                    <reportElement x="10" y="56" width="535" height="16"/>
-                    <textElement>
-                        <font size="11" fontName="DejaVu Serif"/>
-                    </textElement>
-                    <text><![CDATA[Reason if probable return date changes: .................................................................................................................]]></text>
-                </staticText>
-            </frame>
-
-            <!-- Disclaimer -->
-            <staticText>
-                <reportElement x="0" y="400" width="555" height="14"/>
-                <textElement>
-                    <font size="10" fontName="DejaVu Serif"/>
-                </textElement>
-                <text><![CDATA[* This is a computer generated copy based on online approval]]></text>
-            </staticText>
-        </band>
-    </title>
-
-    <detail>
-        <band height="1" splitType="Stretch"/>
-    </detail>
-
-    <pageFooter>
-        <band height="20">
-            <textField isBlankWhenNull="true" isStretchWithOverflow="true">
-                <reportElement x="0" y="2" width="240" height="14"/>
-                <textElement>
-                    <font size="8" fontName="DejaVu Serif"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$P{footerUrl}]]></textFieldExpression>
-            </textField>
-            <textField isBlankWhenNull="true">
-                <reportElement x="240" y="2" width="150" height="14"/>
-                <textElement textAlignment="Center">
-                    <font size="9" fontName="DejaVu Serif"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$P{generatedAt}]]></textFieldExpression>
-            </textField>
-            <textField isBlankWhenNull="true">
-                <reportElement x="390" y="2" width="165" height="14"/>
-                <textElement textAlignment="Right">
-                    <font size="9" fontName="DejaVu Serif"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$P{footerUser}]]></textFieldExpression>
-            </textField>
-        </band>
-    </pageFooter>
+<!-- Created with Jaspersoft Studio version 6.20.1.final using JasperReports Library version 6.20.1-7584acb244139816654f64e2fd57a00d3e31921e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="travel_approval_form" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="57e9d8fb-5952-40d6-8851-7d4f3b96ef52">
+	<parameter name="formNumber" class="java.lang.String"/>
+	<parameter name="applicantName" class="java.lang.String"/>
+	<parameter name="pin" class="java.lang.String"/>
+	<parameter name="designation" class="java.lang.String"/>
+	<parameter name="program" class="java.lang.String"/>
+	<parameter name="destination" class="java.lang.String"/>
+	<parameter name="travelStartDateTime" class="java.lang.String"/>
+	<parameter name="probableReturnDateTime" class="java.lang.String"/>
+	<parameter name="purpose" class="java.lang.String"/>
+	<parameter name="applicationDate" class="java.lang.String"/>
+	<parameter name="applicantSignatureDate" class="java.lang.String"/>
+	<parameter name="approverName" class="java.lang.String"/>
+	<parameter name="approverPin" class="java.lang.String"/>
+	<parameter name="approverDesignation" class="java.lang.String"/>
+	<parameter name="generatedAt" class="java.lang.String"/>
+	<parameter name="footerUrl" class="java.lang.String"/>
+	<parameter name="footerUser" class="java.lang.String"/>
+	<parameter name="bracLogoUrl" class="java.lang.String"/>
+	<title>
+		<band height="430" splitType="Stretch">
+			<image scaleImage="RetainShape" hAlign="Left" vAlign="Top" onErrorType="Blank">
+				<reportElement x="0" y="0" width="124" height="38" uuid="184e13d4-0bb0-482b-a9b4-431359fdf9c6"/>
+				<imageExpression><![CDATA[$P{bracLogoUrl}]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="360" y="2" width="195" height="16" uuid="f34a029e-37dd-4ff3-81e4-fbd645c5694c"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Serif" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Form : " + $P{formNumber}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="44" width="555" height="22" uuid="08edf46a-d7eb-4a8a-a071-d5fdb2961146"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Serif" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TRAVEL APPROVAL FORM]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="82" width="275" height="16" uuid="ad65f9ce-7515-402e-9b9d-81730a06adea"/>
+				<textElement>
+					<font fontName="DejaVu Serif" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Name: " + $P{applicantName}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="102" width="275" height="16" uuid="c937eceb-13fe-47fd-8415-01e4520c4cba"/>
+				<textElement>
+					<font fontName="DejaVu Serif" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Program: " + $P{program}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="122" width="275" height="16" uuid="51dd8085-13ac-4bb4-9b26-e1acf2a1cdf2"/>
+				<textElement>
+					<font fontName="DejaVu Serif" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Travel start date time: " + $P{travelStartDateTime}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="142" width="275" height="16" uuid="f4f2aa65-4636-4b7f-a9c2-c248fda2dd61"/>
+				<textElement>
+					<font fontName="DejaVu Serif" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Purpose: " + $P{purpose}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="162" width="275" height="16" uuid="76c6718d-b62c-429c-ba98-f258a8d3bbba"/>
+				<textElement>
+					<font fontName="DejaVu Serif" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Application Date: " + $P{applicationDate}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="280" y="82" width="275" height="16" uuid="0dd67687-1f71-404a-a21a-ede1bebe184a"/>
+				<textElement>
+					<font fontName="DejaVu Serif" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PIN: " + $P{pin}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="280" y="102" width="275" height="32" uuid="221d991f-2a5a-434d-a888-bbee337d3f77"/>
+				<textElement>
+					<font fontName="DejaVu Serif" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Designation: " + $P{designation}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="280" y="138" width="275" height="16" uuid="1ba7b882-2209-4563-be8d-1a08de70253e"/>
+				<textElement>
+					<font fontName="DejaVu Serif" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Destination: " + $P{destination}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="280" y="158" width="275" height="16" uuid="48c89eba-43dc-4da9-9ec0-dac51df6c78b"/>
+				<textElement>
+					<font fontName="DejaVu Serif" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Probable return date time: " + $P{probableReturnDateTime}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement x="0" y="195" width="555" height="108" uuid="b9450e08-1e27-4bf7-859c-47cf36b3db02"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<line>
+					<reportElement x="277" y="0" width="1" height="108" uuid="02405975-6111-44a2-8914-9e34cd975c32"/>
+					<graphicElement>
+						<pen lineWidth="0.5" lineColor="#000000"/>
+					</graphicElement>
+				</line>
+				<textField isBlankWhenNull="true">
+					<reportElement x="10" y="12" width="255" height="16" uuid="9ed59e01-3278-4285-abf5-df1b54ed381b"/>
+					<textElement>
+						<font fontName="DejaVu Serif" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Applicant Signature: " + $P{applicantName}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="10" y="32" width="255" height="16" uuid="4e799aba-8e39-4929-9cab-230995469754"/>
+					<textElement>
+						<font fontName="DejaVu Serif" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Date: " + $P{applicantSignatureDate}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="287" y="12" width="258" height="16" uuid="3d6919e9-0625-4d16-b294-7499a43258ea"/>
+					<textElement>
+						<font fontName="DejaVu Serif" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Approval information :]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="287" y="32" width="258" height="16" uuid="8270be90-0c34-47bc-8fbe-9eb23d9e6602"/>
+					<textElement>
+						<font fontName="DejaVu Serif" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Name: " + $P{approverName}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="287" y="52" width="258" height="16" uuid="5d4e3e94-2aa2-4196-a2f7-c9b20ebcd636"/>
+					<textElement>
+						<font fontName="DejaVu Serif" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Pin: " + $P{approverPin}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="287" y="72" width="258" height="16" uuid="90ff4b49-337e-40c0-bb0a-64805cd5e150"/>
+					<textElement>
+						<font fontName="DejaVu Serif" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Designation: " + $P{approverDesignation}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement x="0" y="308" width="555" height="82" uuid="d32e7186-7bec-4f4f-b83f-42344a929840"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<staticText>
+					<reportElement x="0" y="10" width="555" height="16" uuid="747f4850-815d-44c8-9e38-5ce7066054d4"/>
+					<textElement textAlignment="Center">
+						<font fontName="DejaVu Serif" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[To be completed at the end of the trip]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="10" y="34" width="535" height="16" uuid="769e8bba-0f4b-4aed-a810-85befff5ec69"/>
+					<textElement>
+						<font fontName="DejaVu Serif" size="11"/>
+					</textElement>
+					<text><![CDATA[Actual return date: .................................................................... Time: ....................................................................]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="10" y="56" width="535" height="16" uuid="16279ede-f088-4444-9b9b-d2ddc9d31b8d"/>
+					<textElement>
+						<font fontName="DejaVu Serif" size="11"/>
+					</textElement>
+					<text><![CDATA[Reason if probable return date changes: .................................................................................................................]]></text>
+				</staticText>
+			</frame>
+			<staticText>
+				<reportElement x="0" y="400" width="555" height="14" uuid="166e78a2-5b69-4f0c-ba37-35c2744fa35c"/>
+				<textElement>
+					<font fontName="DejaVu Serif" size="10"/>
+				</textElement>
+				<text><![CDATA[* This is a computer generated copy based on online approval]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="1" splitType="Stretch"/>
+	</detail>
+	<pageFooter>
+		<band height="20">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="0" y="2" width="240" height="14" uuid="68cddfb0-7eff-4cac-af20-41072b3c8c3b"/>
+				<textElement>
+					<font fontName="DejaVu Serif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{footerUrl}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="240" y="2" width="150" height="14" uuid="3c19f94b-53b4-4c0c-a1dd-4a3ff3039460"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Serif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{generatedAt}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="390" y="2" width="165" height="14" uuid="7d4216dd-6278-499e-93ff-c798ae9c11e8"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Serif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{footerUser}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
 </jasperReport>

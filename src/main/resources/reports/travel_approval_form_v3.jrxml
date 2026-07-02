@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  TravelApprovalForm.jrxml
+  Recreated from client-supplied screenshot of the BRAC "Travel Approval Form".
+  Page: A4 portrait, 40pt margins on all sides.
+  Typeface: Times New Roman (PDF base-14 "Times-Roman" -> no font embedding needed,
+             so PDF output will render pixel-identical without shipping font files).
+
+  HOW TO FILL:
+    Pass a Map<String,Object> of parameters (see <parameter> list below) and a
+    single-row datasource, e.g.:
+
+        Map<String,Object> params = new HashMap<>();
+        params.put("P_NAME", "MUSHRIF AHMED");
+        ... etc ...
+        JasperPrint print = JasperFillManager.fillReport(
+            jasperReport, params, new JREmptyDataSource(1));
+
+  LOGO:
+    Put brac_logo.png next to the compiled .jasper file (or on the classpath) OR
+    change the imageExpression below to an absolute path / $P{LOGO_PATH}.
+-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="TravelApprovalForm"
+              pageWidth="595"
+              pageHeight="842"
+              columnWidth="515"
+              leftMargin="40"
+              rightMargin="40"
+              topMargin="30"
+              bottomMargin="30"
+              whenNoDataType="AllSectionsNoDetail">
+
+    <property name="net.sf.jasperreports.export.pdf.force.linebreak.policy" value="true"/>
+
+    <!-- ========================= STYLES ========================= -->
+    <style name="Base" fontName="Times New Roman" fontSize="11"
+           pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+
+    <style name="BaseBold" fontName="Times New Roman" fontSize="11" isBold="true"
+           pdfFontName="Times-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+
+    <style name="Title" fontName="Times New Roman" fontSize="17" isBold="true"
+           pdfFontName="Times-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+
+    <style name="FormNo" fontName="Times New Roman" fontSize="12" isBold="true"
+           pdfFontName="Times-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+
+    <style name="Footnote" fontName="Times New Roman" fontSize="9" isItalic="true"
+           pdfFontName="Times-Italic" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+
+    <style name="FooterSmall" fontName="Times New Roman" fontSize="8"
+           pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+
+    <!-- ======================= PARAMETERS ========================= -->
+    <parameter name="LOGO_PATH" class="java.lang.String">
+        <defaultValueExpression><![CDATA["brac_logo.png"]]></defaultValueExpression>
+    </parameter>
+
+    <parameter name="P_FORM_NUMBER" class="java.lang.String">
+        <defaultValueExpression><![CDATA["14/18/2011"]]></defaultValueExpression>
+    </parameter>
+
+    <parameter name="P_NAME" class="java.lang.String">
+        <defaultValueExpression><![CDATA["MUSHRIF AHMED"]]></defaultValueExpression>
+    </parameter>
+    <parameter name="P_PIN" class="java.lang.String">
+        <defaultValueExpression><![CDATA["00254539"]]></defaultValueExpression>
+    </parameter>
+    <parameter name="P_DESIGNATION" class="java.lang.String">
+        <defaultValueExpression><![CDATA["Senior Manager, User Experience"]]></defaultValueExpression>
+    </parameter>
+    <parameter name="P_PROGRAM" class="java.lang.String">
+        <defaultValueExpression><![CDATA["Technology Division"]]></defaultValueExpression>
+    </parameter>
+    <parameter name="P_DESTINATION" class="java.lang.String">
+        <defaultValueExpression><![CDATA["Cumilla BLC"]]></defaultValueExpression>
+    </parameter>
+    <parameter name="P_TRAVEL_START" class="java.lang.String">
+        <defaultValueExpression><![CDATA["25 Feb 2025 8:30 AM"]]></defaultValueExpression>
+    </parameter>
+    <parameter name="P_PROBABLE_RETURN" class="java.lang.String">
+        <defaultValueExpression><![CDATA["27 Feb 2025 5:15 PM"]]></defaultValueExpression>
+    </parameter>
+    <parameter name="P_PURPOSE" class="java.lang.String">
+        <defaultValueExpression><![CDATA["ERP v3 HR module"]]></defaultValueExpression>
+    </parameter>
+    <parameter name="P_APPLICATION_DATE" class="java.lang.String">
+        <defaultValueExpression><![CDATA["02 Mar 2025"]]></defaultValueExpression>
+    </parameter>
+
+    <parameter name="P_APPLICANT_SIGNATURE" class="java.lang.String">
+        <defaultValueExpression><![CDATA["MUSHRIF AHMED"]]></defaultValueExpression>
+    </parameter>
+    <parameter name="P_APPLICANT_SIGN_DATE" class="java.lang.String">
+        <defaultValueExpression><![CDATA["02 Mar 2025"]]></defaultValueExpression>
+    </parameter>
+
+    <parameter name="P_APPROVER_NAME" class="java.lang.String">
+        <defaultValueExpression><![CDATA["M.M. ARAFAT HOSSAIN"]]></defaultValueExpression>
+    </parameter>
+    <parameter name="P_APPROVER_PIN" class="java.lang.String">
+        <defaultValueExpression><![CDATA["00250006"]]></defaultValueExpression>
+    </parameter>
+    <parameter name="P_APPROVER_DESIGNATION" class="java.lang.String">
+        <defaultValueExpression><![CDATA["Head of PMU and Applications"]]></defaultValueExpression>
+    </parameter>
+
+    <parameter name="P_FOOTER_URL" class="java.lang.String">
+        <defaultValueExpression><![CDATA["https://ebenefits.brac.net/payroll-selfcare/visit"]]></defaultValueExpression>
+    </parameter>
+    <parameter name="P_GENERATED_DATETIME" class="java.lang.String">
+        <defaultValueExpression><![CDATA[new java.text.SimpleDateFormat("dd-MMM-yyyy   hh:mm a").format(new java.util.Date())]]></defaultValueExpression>
+    </parameter>
+    <parameter name="P_GENERATED_BY" class="java.lang.String">
+        <defaultValueExpression><![CDATA["Mushrif Ahmed [PIN NUMBER]"]]></defaultValueExpression>
+    </parameter>
+
+    <!-- ========================= TITLE BAND ========================= -->
+    <!-- Logo + form number + form title. Prints once. -->
+    <title>
+        <band height="115" splitType="Stretch">
+
+            <image scaleImage="RetainShape" hAlign="Left" vAlign="Middle" onErrorType="Blank">
+                <reportElement x="0" y="0" width="150" height="76"/>
+                <imageExpression><![CDATA[$P{LOGO_PATH}]]></imageExpression>
+            </image>
+
+            <textField>
+                <reportElement style="FormNo" x="330" y="5" width="185" height="20"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA["Form :   " + $P{P_FORM_NUMBER}]]></textFieldExpression>
+            </textField>
+
+            <staticText>
+                <reportElement style="Title" x="0" y="76" width="515" height="30"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <text><![CDATA[TRAVEL APPROVAL FORM]]></text>
+            </staticText>
+        </band>
+    </title>
+
+    <!-- ========================= DETAIL BAND ========================= -->
+    <!-- All form data. Needs exactly one row from the datasource
+         (JREmptyDataSource(1) is fine since every value comes from parameters). -->
+    <detail>
+        <band height="470" splitType="Stretch">
+
+            <!-- Row 1 : Name / PIN / Designation -->
+            <textField>
+                <reportElement style="Base" x="0" y="15" width="255" height="18"/>
+                <textElement/>
+                <textFieldExpression><![CDATA["Name:  " + $P{P_NAME}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement style="Base" x="260" y="15" width="120" height="18"/>
+                <textElement/>
+                <textFieldExpression><![CDATA["PIN:  " + $P{P_PIN}]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement style="Base" x="385" y="10" width="130" height="36"
+                               positionType="Float"/>
+                <textElement/>
+                <textFieldExpression><![CDATA["Designation:  " + $P{P_DESIGNATION}]]></textFieldExpression>
+            </textField>
+
+            <!-- Row 2 : Program / Destination -->
+            <textField>
+                <reportElement style="Base" x="0" y="55" width="255" height="18" positionType="Float"/>
+                <textElement/>
+                <textFieldExpression><![CDATA["Program:  " + $P{P_PROGRAM}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement style="Base" x="260" y="55" width="255" height="18" positionType="Float"/>
+                <textElement/>
+                <textFieldExpression><![CDATA["Destination:  " + $P{P_DESTINATION}]]></textFieldExpression>
+            </textField>
+
+            <!-- Row 3 : Travel start / Probable return -->
+            <textField>
+                <reportElement style="Base" x="0" y="80" width="270" height="18" positionType="Float"/>
+                <textElement/>
+                <textFieldExpression><![CDATA["Travel start date time:  " + $P{P_TRAVEL_START}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement style="Base" x="280" y="80" width="235" height="18" positionType="Float"/>
+                <textElement/>
+                <textFieldExpression><![CDATA["Probable return date time:  " + $P{P_PROBABLE_RETURN}]]></textFieldExpression>
+            </textField>
+
+            <!-- Row 4 : Purpose -->
+            <textField isStretchWithOverflow="true">
+                <reportElement style="Base" x="0" y="105" width="515" height="18" positionType="Float"/>
+                <textElement/>
+                <textFieldExpression><![CDATA["Purpose:  " + $P{P_PURPOSE}]]></textFieldExpression>
+            </textField>
+
+            <!-- Row 5 : Application Date -->
+            <textField>
+                <reportElement style="Base" x="0" y="130" width="515" height="18" positionType="Float"/>
+                <textElement/>
+                <textFieldExpression><![CDATA["Application Date:  " + $P{P_APPLICATION_DATE}]]></textFieldExpression>
+            </textField>
+
+            <!-- ============ Bordered signature / approval box ============ -->
+            <rectangle>
+                <reportElement x="0" y="175" width="515" height="215" positionType="Float"/>
+                <graphicElement>
+                    <pen lineWidth="1.0" lineColor="#000000"/>
+                </graphicElement>
+            </rectangle>
+
+            <!-- vertical divider -->
+            <line>
+                <reportElement x="258" y="175" width="0" height="140" positionType="Float"/>
+                <graphicElement>
+                    <pen lineWidth="1.0" lineColor="#000000"/>
+                </graphicElement>
+            </line>
+
+            <!-- horizontal divider before "to be completed" section -->
+            <line>
+                <reportElement x="0" y="315" width="515" height="0" positionType="Float"/>
+                <graphicElement>
+                    <pen lineWidth="1.0" lineColor="#000000"/>
+                </graphicElement>
+            </line>
+
+            <!-- Left column: applicant signature -->
+            <textField>
+                <reportElement style="Base" x="12" y="215" width="235" height="18" positionType="Float"/>
+                <textElement/>
+                <textFieldExpression><![CDATA["Applicant Signature:  " + $P{P_APPLICANT_SIGNATURE}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement style="Base" x="12" y="245" width="235" height="18" positionType="Float"/>
+                <textElement/>
+                <textFieldExpression><![CDATA["Date:  " + $P{P_APPLICANT_SIGN_DATE}]]></textFieldExpression>
+            </textField>
+
+            <!-- Right column: approval information -->
+            <staticText>
+                <reportElement style="BaseBold" x="278" y="190" width="220" height="18" positionType="Float"/>
+                <textElement/>
+                <text><![CDATA[Approval information :]]></text>
+            </staticText>
+            <textField>
+                <reportElement style="Base" x="278" y="218" width="220" height="18" positionType="Float"/>
+                <textElement/>
+                <textFieldExpression><![CDATA["Name: " + $P{P_APPROVER_NAME}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement style="Base" x="278" y="246" width="220" height="18" positionType="Float"/>
+                <textElement/>
+                <textFieldExpression><![CDATA["Pin: " + $P{P_APPROVER_PIN}]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement style="Base" x="278" y="274" width="220" height="30" positionType="Float"/>
+                <textElement/>
+                <textFieldExpression><![CDATA["Designation: " + $P{P_APPROVER_DESIGNATION}]]></textFieldExpression>
+            </textField>
+
+            <!-- Bottom section inside the box -->
+            <staticText>
+                <reportElement style="BaseBold" x="0" y="322" width="515" height="20" positionType="Float"/>
+                <textElement textAlignment="Center"/>
+                <text><![CDATA[To be completed at the end of the trip]]></text>
+            </staticText>
+            <staticText>
+                <reportElement style="Base" x="12" y="350" width="495" height="18" positionType="Float"/>
+                <textElement/>
+                <text><![CDATA[Actual return date: .................................................  Time: .......................................................]]></text>
+            </staticText>
+            <staticText>
+                <reportElement style="Base" x="12" y="375" width="495" height="18" positionType="Float"/>
+                <textElement/>
+                <text><![CDATA[Reason if probable return date changes: ...........................................................................................]]></text>
+            </staticText>
+
+            <!-- Footnote below the box -->
+            <staticText>
+                <reportElement style="Footnote" x="0" y="405" width="515" height="16" positionType="Float"/>
+                <textElement/>
+                <text><![CDATA[* This is a computer generated copy based on online approval]]></text>
+            </staticText>
+
+        </band>
+    </detail>
+
+    <!-- ========================= PAGE FOOTER ========================= -->
+    <pageFooter>
+        <band height="20">
+            <textField>
+                <reportElement style="FooterSmall" x="0" y="0" width="220" height="16"/>
+                <textElement/>
+                <textFieldExpression><![CDATA[$P{P_FOOTER_URL}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement style="FooterSmall" x="220" y="0" width="150" height="16"/>
+                <textElement textAlignment="Center"/>
+                <textFieldExpression><![CDATA[$P{P_GENERATED_DATETIME}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement style="FooterSmall" x="370" y="0" width="145" height="16"/>
+                <textElement textAlignment="Right"/>
+                <textFieldExpression><![CDATA[$P{P_GENERATED_BY}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
+
+</jasperReport>
